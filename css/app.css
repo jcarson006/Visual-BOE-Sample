@@ -1,0 +1,130 @@
+/*
+VOICE   engineering estimate, calm and exact; the numbers do the talking
+IDEA    a construction alignment sheet you can fly through
+PICTURE the route on terrain, coloured by spread, terrain or cost; profile strip below
+COLOUR  white paper, near-black ink, summer orange and winter blue for the two spreads
+TYPE    IBM Plex Sans, tabular figures; four sizes
+*/
+:root {
+  --bg: #ffffff;
+  --paper: #f6f6f3;
+  --ink: #16181a;
+  --muted: #646a72;
+  --rule: #e2e2dd;
+  --summer: #e07b24;
+  --winter: #3f8fd6;
+  --sel: #ffd400;
+  --panel-w: 430px;
+  --profile-h: 168px;
+}
+* { box-sizing: border-box; min-width: 0; }
+html, body { height: 100%; margin: 0; }
+body { background: var(--bg); color: var(--ink); font: 15px/1.5 "IBM Plex Sans", system-ui, sans-serif; font-variant-numeric: tabular-nums; }
+button { font: inherit; color: inherit; cursor: pointer; }
+button:focus-visible { outline: 2px solid var(--winter); outline-offset: 2px; }
+.muted { color: var(--muted); }
+
+.app { display: grid; grid-template-columns: minmax(0, 1fr) var(--panel-w); height: 100vh; }
+.stage { position: relative; display: flex; flex-direction: column; background: #0e1012; min-height: 0; overflow: hidden; }
+.map { flex: 1 1 auto; position: relative; min-height: 0; overflow: hidden; }
+.profile { flex: none; }
+.cesium-viewer-bottom { left: 8px; bottom: 4px; }
+
+/* Map toolbar */
+.toolbar { position: absolute; top: 12px; left: 12px; right: 12px; display: flex; flex-wrap: wrap; gap: 8px; pointer-events: none; }
+.toolbar > * { pointer-events: auto; }
+.seg { display: flex; align-items: center; flex-wrap: wrap; background: rgba(255,255,255,.94); border-radius: 8px; padding: 3px; box-shadow: 0 1px 4px rgba(0,0,0,.25); }
+.seg-label { font-size: 12px; color: var(--muted); padding: 0 8px; }
+.seg button, .tool { border: 0; background: transparent; padding: 6px 10px; border-radius: 6px; font-size: 13px; min-height: 32px; }
+.seg button.on { background: var(--ink); color: #fff; }
+.seg button:hover:not(.on) { background: var(--paper); }
+.tool { background: rgba(255,255,255,.94); box-shadow: 0 1px 4px rgba(0,0,0,.25); border-radius: 8px; }
+.tool[aria-pressed="true"] { background: var(--sel); }
+
+.legend { position: absolute; left: 12px; bottom: calc(var(--profile-h) + 34px); background: rgba(255,255,255,.94); border-radius: 8px; padding: 8px 10px; font-size: 12px; box-shadow: 0 1px 4px rgba(0,0,0,.25); max-width: 260px; }
+.legend .row { display: flex; align-items: center; gap: 8px; line-height: 1.7; }
+.legend i { width: 18px; height: 5px; border-radius: 3px; flex: none; }
+.legend .ramp { height: 8px; border-radius: 4px; margin: 4px 0 2px; }
+.legend .ends { display: flex; justify-content: space-between; color: var(--muted); }
+
+.tip { position: absolute; pointer-events: none; background: var(--ink); color: #fff; font-size: 12px; padding: 6px 8px; border-radius: 6px; white-space: nowrap; transform: translate(12px, 12px); z-index: 5; }
+.tip b { font-weight: 600; }
+.notice { position: absolute; right: 12px; bottom: calc(var(--profile-h) + 34px); max-width: min(420px, calc(100% - 24px)); cursor: pointer; box-shadow: 0 1px 4px rgba(0,0,0,.25); background: #fff8d6; border: 1px solid #e8d77a; border-radius: 8px; padding: 8px 10px; font-size: 13px; }
+
+/* Profile strip */
+.profile { height: var(--profile-h); background: #fff; border-top: 1px solid var(--rule); display: flex; flex-direction: column; }
+.profile-head { display: flex; gap: 12px; align-items: baseline; padding: 6px 14px 0; font-size: 13px; }
+.profile-fig { position: relative; flex: 1; }
+.profile-fig > svg { position: absolute; inset: 0; width: 100%; height: 100%; cursor: crosshair; }
+.profile-fig text { font-size: 11px; fill: var(--muted); }
+
+/* Panel */
+.panel { display: flex; flex-direction: column; border-left: 1px solid var(--rule); background: var(--bg); overflow: hidden; }
+.head { padding: 18px 20px 14px; border-bottom: 1px solid var(--rule); }
+.kicker { margin: 0; font-size: 13px; color: var(--muted); }
+h1 { margin: 2px 0 8px; font-size: 22px; line-height: 1.15; font-weight: 600; }
+.total { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; }
+.big { font-size: 34px; font-weight: 600; line-height: 1.05; letter-spacing: -.01em; }
+.flag { margin: 8px 0 0; font-size: 12px; color: #7a5b00; background: #fff6cc; border-radius: 6px; padding: 4px 8px; }
+
+.tabs { display: flex; border-bottom: 1px solid var(--rule); padding: 0 12px; }
+.tabs button { border: 0; background: none; padding: 10px 10px 9px; font-size: 14px; color: var(--muted); border-bottom: 2px solid transparent; min-height: 44px; }
+.tabs button.on { color: var(--ink); border-bottom-color: var(--ink); font-weight: 500; }
+.body { flex: 1; overflow-y: auto; padding: 16px 20px 32px; }
+h2 { font-size: 15px; font-weight: 600; margin: 22px 0 8px; }
+h2:first-child { margin-top: 0; }
+p { margin: 0 0 10px; }
+
+/* Category bar */
+.stackbar { display: flex; height: 14px; border-radius: 7px; overflow: hidden; margin: 4px 0 10px; }
+.stackbar span { display: block; height: 100%; }
+.rows { width: 100%; border-collapse: collapse; font-size: 14px; }
+.rows td, .rows th { padding: 6px 0; border-bottom: 1px solid var(--rule); vertical-align: top; text-align: left; }
+.rows th { font-size: 12px; color: var(--muted); font-weight: 500; }
+.rows .n { text-align: right; white-space: nowrap; padding-left: 10px; }
+.rows .dot { width: 10px; height: 10px; border-radius: 3px; display: inline-block; margin-right: 8px; vertical-align: -1px; }
+.rows tr.click { cursor: pointer; }
+.rows tr.click:hover td { background: var(--paper); }
+.rows tfoot td { font-weight: 600; border-bottom: 0; }
+.rows .sub { display: block; font-size: 12px; color: var(--muted); }
+
+.cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.card { border: 1px solid var(--rule); border-radius: 10px; padding: 12px; text-align: left; background: var(--bg); }
+.card:hover { background: var(--paper); }
+.card .sw { display: block; height: 4px; border-radius: 2px; margin-bottom: 8px; }
+.card strong { display: block; font-size: 14px; }
+.card .amt { font-size: 20px; font-weight: 600; display: block; margin: 2px 0; }
+.card small { display: block; color: var(--muted); font-size: 12px; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.chip { border: 1px solid var(--rule); background: var(--bg); border-radius: 999px; padding: 4px 10px; font-size: 13px; min-height: 32px; display: inline-flex; align-items: center; gap: 6px; }
+.chip.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+.glyph { width: 18px; height: 18px; border-radius: 50%; color: #fff; font-size: 11px; font-weight: 600; display: inline-grid; place-items: center; flex: none; }
+
+/* Detail */
+.back { border: 0; background: none; padding: 0; color: var(--winter); font-size: 14px; min-height: 32px; }
+.detail h2 { font-size: 20px; margin: 4px 0 4px; line-height: 1.2; }
+.meta { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13px; color: var(--muted); margin-bottom: 12px; }
+.pill { display: inline-block; font-size: 12px; padding: 1px 8px; border-radius: 999px; color: #fff; }
+.detail .amt { font-size: 28px; font-weight: 600; margin: 4px 0 12px; }
+.items td:first-child { padding-right: 8px; }
+.btn { border: 1px solid var(--ink); background: var(--ink); color: #fff; border-radius: 8px; padding: 8px 14px; min-height: 40px; font-size: 14px; }
+.btn.ghost { background: var(--bg); color: var(--ink); }
+.btns { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0; }
+ul.plain { padding-left: 18px; margin: 0 0 10px; }
+ul.plain li { margin-bottom: 4px; }
+.small { font-size: 12px; color: var(--muted); }
+
+@media (max-width: 900px) {
+  .app { grid-template-columns: 1fr; grid-template-rows: 62vh auto; height: auto; }
+  .stage { height: 62vh; }
+  :root { --profile-h: 130px; }
+  .panel { border-left: 0; border-top: 1px solid var(--rule); overflow: visible; }
+  .body { overflow: visible; }
+  .legend { display: none; }
+}
+@media (max-width: 520px) {
+  .seg-label { display: none; }
+  .big { font-size: 28px; }
+  .cards { grid-template-columns: 1fr; }
+}

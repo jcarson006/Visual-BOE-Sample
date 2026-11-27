@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Foothills Lateral - Visual BOE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/cesium@1.146.0/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+  <link href="css/app.css" rel="stylesheet">
+</head>
+<body>
+  <div class="app">
+    <section class="stage">
+      <div id="map" class="map"></div>
+
+      <div class="toolbar" role="toolbar" aria-label="Map tools">
+        <div class="seg" id="colorMode" role="group" aria-label="Colour route by">
+          <span class="seg-label">Colour by</span>
+          <button type="button" data-mode="spread" class="on">Spread</button>
+          <button type="button" data-mode="terrain">Terrain</button>
+          <button type="button" data-mode="cost">Cost per m</button>
+        </div>
+        <div class="seg" id="views" role="group" aria-label="Views"><span class="seg-label">Go to</span></div>
+        <button type="button" id="pickBtn" class="tool" aria-pressed="false">Pick KP</button>
+      </div>
+
+      <div class="legend" id="legend" aria-live="polite"></div>
+      <div class="tip" id="tip" hidden></div>
+      <div class="notice" id="notice" hidden></div>
+
+      <div class="profile" id="profile">
+        <div class="profile-head">
+          <strong>Elevation profile</strong>
+          <span id="profileRead" class="muted">Hover to read, click to fly there</span>
+        </div>
+        <div class="profile-fig" id="profileFig"><svg id="profileSvg" aria-label="Elevation profile along the route"></svg></div>
+      </div>
+    </section>
+
+    <aside class="panel" id="panel">
+      <header class="head">
+        <p class="kicker" id="pjClient"></p>
+        <h1 id="pjName"></h1>
+        <div class="total">
+          <span class="big" id="pjTotal"></span>
+          <span class="muted" id="pjSub"></span>
+        </div>
+        <p class="flag" id="pjFlag"></p>
+      </header>
+
+      <nav class="tabs" role="tablist">
+        <button type="button" role="tab" data-tab="summary" class="on">Summary</button>
+        <button type="button" role="tab" data-tab="spreads">Spreads</button>
+        <button type="button" role="tab" data-tab="crossings">Crossings</button>
+        <button type="button" role="tab" data-tab="basis">Basis</button>
+      </nav>
+
+      <div class="body" id="body"></div>
+    </aside>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/cesium@1.146.0/Build/Cesium/Cesium.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/estimate.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
