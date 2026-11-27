@@ -6,7 +6,7 @@
   Leave it empty to run without terrain (flat globe, OpenStreetMap imagery).
 */
 window.BOE_CONFIG = {
-  ionToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJub25jZSI6IlNMN0FHZG42QkFuQmRPZloiLCJqdGkiOiI1Y2NhNTk5Ni1jOWRiLTRlMjgtODJmOC1iODhjYzNlNWZkNGEiLCJpZCI6NTU4MjEzLCJpc3MiOiJodHRwczovL2FwaS5jZXNpdW0uY29tIiwiYXVkIjoidW5kZWZpbmVkX2RlZmF1bHQiLCJpYXQiOjE3OTU3OTUwMDJ9.JomMiHk-bhwhmOenJIg9-dHSZXohqnuZACTX81AqDQM",
+  ionToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJub25jZSI6IkdTNWZBZGZ2anMyQndSRkkiLCJqdGkiOiJlMjM2YWU0OS04ZjVkLTQzZjUtYWY4MS1kZjcwMjgxNWE1NWUiLCJpZCI6NTU4MjEzLCJzdWIiOiJKY2Fyc29uMDA2IiwiaXNzIjoiaHR0cHM6Ly9hcGkuY2VzaXVtLmNvbSIsImF1ZCI6IlZpc3VhbCBCT0UiLCJpYXQiOjE3OTU4MDA5OTh9.vrI7qllpqkfoa1jnH2kIhHeavkpHGSko7fbPftky3T4",
   terrainExaggeration: 1.5,
   profileSampleSpacing_m: 100
 };
