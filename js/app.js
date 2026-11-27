@@ -2,6 +2,10 @@
 (function () {
   "use strict";
   var D = window.BOE_DATA, C = window.BOE_CONFIG || {};
+  if (!D || !window.BOE) {
+    document.getElementById("body").innerHTML = '<p><strong>The data file did not load.</strong></p><p>js/data.js most likely has a typing error from the last edit. The red message on the map says which line.</p>';
+    return;
+  }
   var E = BOE.estimate(D), route = E.route, kpL = BOE.kpLabel;
 
   /* ---------- helpers ---------- */
@@ -370,9 +374,10 @@
     h.setInputAction(function (ev) {
       if (picking) {
         var g = groundAt(ev.position); if (!g) return;
-        var txt = pickText(g);
+        var txt = pickText(g), kpVal = route.nearest(g.lon, g.lat).kp.toFixed(3);
         pickPin.position = C3.Cartesian3.fromDegrees(g.lon, g.lat); pickPin.show = true;
-        try { navigator.clipboard.writeText(txt); notice("Copied: " + txt); } catch (e) { notice(txt); }
+        try { navigator.clipboard.writeText(kpVal); notice(txt + ". Copied " + kpVal + ", ready to paste as kp: " + kpVal, true); }
+        catch (e) { notice(txt + ". Use kp: " + kpVal, true); }
         return;
       }
       var p = scene.pick(ev.position), id = p && p.id && p.id.id;
