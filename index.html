@@ -61,6 +61,14 @@
     </aside>
   </div>
 
+  <script>
+    window.addEventListener("error", function (e) {
+      if (!e.filename || !/js\/(data|config)\.js/.test(e.filename)) return;
+      var n = document.getElementById("notice"), f = e.filename.split("/").pop();
+      n.textContent = "Error in js/" + f + " at line " + e.lineno + ": " + e.message + ". Fix that line, save, and press F5.";
+      n.style.background = "#ffe3e0"; n.style.borderColor = "#e08a80"; n.hidden = false;
+    });
+  </script>
   <script src="https://cdn.jsdelivr.net/npm/cesium@1.146.0/Build/Cesium/Cesium.js"></script>
   <script src="js/config.js"></script>
   <script src="js/data.js"></script>
